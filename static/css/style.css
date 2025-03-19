@@ -1,0 +1,265 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Custom Variables */
+:root {
+    --primary-color: #6c63ff;
+    --secondary-color: #4CAF50;
+    --dark-color: #2c3e50;
+    --light-color: #f8f9fa;
+    --gradient: linear-gradient(135deg, #6c63ff 0%, #3b82f6 100%);
+}
+
+[data-bs-theme=dark] {
+    --primary-color: #8b85ff;
+    --dark-color: #f8f9fa;
+    --light-color: #2c3e50;
+    --bs-body-bg: #1a1a1a;
+    --bs-body-color: #f8f9fa;
+    --bs-tertiary-bg: #2d2d2d;
+}
+
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--bs-body-bg, #f4f6f9);
+    color: var(--bs-body-color, var(--dark-color));
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+}
+
+/* Navbar Styling */
+.navbar {
+    background: var(--gradient);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+/* Theme Toggle Button */
+#themeToggle {
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9) !important;
+    transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+    color: white !important;
+    transform: rotate(15deg);
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    background: var(--bs-tertiary-bg, white);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: var(--gradient);
+    color: white;
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--gradient);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+}
+
+/* Progress Bar Styling */
+.progress {
+    height: 10px;
+    border-radius: 5px;
+    background-color: var(--bs-tertiary-bg, #e9ecef);
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: var(--gradient);
+    transition: width 0.6s ease;
+}
+
+/* Dashboard Stats */
+.stats-card {
+    background: var(--bs-tertiary-bg, white);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.stats-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient);
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* Form Styling */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid var(--bs-tertiary-bg, #e0e0e0);
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background: var(--bs-tertiary-bg, white);
+    color: var(--bs-body-color, var(--dark-color));
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
+}
+
+/* Table Styling */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    color: var(--bs-body-color, var(--dark-color));
+}
+
+.table thead th {
+    background: var(--gradient);
+    color: white;
+    border: none;
+    padding: 1rem;
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer */
+.footer {
+    background: var(--bs-tertiary-bg, var(--light-color)) !important;
+}
+
+.text-muted {
+    color: var(--bs-tertiary-color, #6c757d) !important;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background: var(--bs-tertiary-bg, white);
+    border: none;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    color: var(--bs-body-color, var(--dark-color));
+}
+
+.dropdown-item:hover {
+    background: var(--bs-tertiary-bg, #f8f9fa);
+}
+
+/* Transaction list */
+.transaction-item {
+    border-left: 4px solid transparent;
+}
+
+.transaction-item.income {
+    border-left-color: #28a745;
+}
+
+.transaction-item.expense {
+    border-left-color: #dc3545;
+}
+
+/* Budget progress */
+.budget-progress {
+    height: 10px;
+    border-radius: 5px;
+}
+
+/* Goals */
+.goal-card {
+    background: linear-gradient(45deg, #f8f9fa, #ffffff);
+}
+
+.goal-progress {
+    height: 8px;
+}
+
+/* Reports */
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 300px;
+}
+
+/* Dark mode adjustments */
+[data-bs-theme="dark"] .stats-card {
+    background-color: #2b3035;
+}
+
+[data-bs-theme="dark"] .goal-card {
+    background: linear-gradient(45deg, #2b3035, #212529);
+}

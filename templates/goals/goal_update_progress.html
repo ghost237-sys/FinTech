@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Update Goal Progress{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Update Goal Progress</h3>
+                </div>
+                <div class="card-body">
+                    <h4>{{ goal.name }}</h4>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Current Progress</span>
+                            <span>{{ goal.get_progress_percentage|floatformat:1 }}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"
+                                 style="width: {{ goal.get_progress_percentage }}%"
+                                 aria-valuenow="{{ goal.get_progress_percentage }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <dl class="row mb-4">
+                        <dt class="col-sm-6">Target Amount:</dt>
+                        <dd class="col-sm-6">{{ goal.target_amount }}</dd>
+                        
+                        <dt class="col-sm-6">Current Amount:</dt>
+                        <dd class="col-sm-6">{{ goal.current_amount }}</dd>
+                        
+                        <dt class="col-sm-6">Remaining:</dt>
+                        <dd class="col-sm-6">{{ goal.get_remaining_amount }}</dd>
+                    </dl>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Add Amount</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="amount" name="amount" required>
+                            <div class="form-text">Enter the amount you want to add to your progress.</div>
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'goal_list' %}" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-success">Update Progress</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

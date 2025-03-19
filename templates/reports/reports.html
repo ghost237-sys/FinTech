@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Financial Reports{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Financial Reports</h2>
+
+    <div class="row">
+        <!-- Income vs Expense Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Income vs Expense</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="incomeExpenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Distribution Chart -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Expense by Category</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="categoryDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Trends Chart -->
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Monthly Trends</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="monthlyTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Income vs Expense Chart
+    fetch('{% url "income_expense_chart" %}')
+        .then(response => response.json())
+        .then(data => {
+            new Chart(document.getElementById('incomeExpenseChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Income', 'Expense'],
+                    datasets: [{
+                        data: [data.income, data.expense],
+                        backgroundColor: ['#28a745', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+
+    // Category Distribution Chart
+    fetch('{% url "category_distribution_chart" %}')
+        .then(response => response.json())
+        .then(data => {
+            const categories = Object.keys(data.categories);
+            const amounts = Object.values(data.categories);
+            
+            new Chart(document.getElementById('categoryDistributionChart'), {
+                type: 'pie',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        data: amounts,
+                        backgroundColor: [
+                            '#007bff', '#28a745', '#dc3545', '#ffc107', '#17a2b8',
+                            '#6610f2', '#e83e8c', '#fd7e14', '#20c997', '#6f42c1'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+
+    // Monthly Trends Chart
+    fetch('{% url "monthly_trends_chart" %}')
+        .then(response => response.json())
+        .then(data => {
+            const months = Object.keys(data.trends);
+            const incomeData = months.map(month => data.trends[month].income);
+            const expenseData = months.map(month => data.trends[month].expense);
+
+            new Chart(document.getElementById('monthlyTrendsChart'), {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Income',
+                            data: incomeData,
+                            borderColor: '#28a745',
+                            fill: false
+                        },
+                        {
+                            label: 'Expense',
+                            data: expenseData,
+                            borderColor: '#dc3545',
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+});
+</script>
+{% endblock %}

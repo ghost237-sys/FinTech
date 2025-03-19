@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Welcome Banner -->
+    <div class="card mb-4 fade-in">
+        <div class="card-body p-4" style="background: var(--gradient); position: relative; overflow: hidden;">
+            <!-- Semi-transparent overlay -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.1);"></div>
+            <div class="row align-items-center position-relative">
+                <div class="col-md-8">
+                    <h2 class="text-white mb-3" style="font-family: 'Orbitron', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Welcome back, {{ user.username }}!</h2>
+                    <p class="text-white mb-0" style="text-shadow: 0 1px 2px rgba(0,0,0,0.1);">Track your finances, set budgets, and achieve your financial goals with our powerful tools.</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <i class="fas fa-chart-line fa-4x" style="color: rgba(255, 255, 255, 0.9); text-shadow: 0 2px 4px rgba(0,0,0,0.2);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row fade-in">
+        <!-- Income Stats -->
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon me-3">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">Income</h6>
+                        <h4 class="mb-0">{{ user.currency }} {{ total_income|default:"0" }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expense Stats -->
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon me-3" style="background: var(--gradient);">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">Expenses</h6>
+                        <h4 class="mb-0">{{ user.currency }} {{ total_expenses|default:"0" }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balance Stats -->
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon me-3" style="background: var(--gradient);">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">Balance</h6>
+                        <h4 class="mb-0">{{ user.currency }} {{ balance|default:"0" }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goals Stats -->
+        <div class="col-md-3 mb-4">
+            <div class="stats-card">
+                <div class="d-flex align-items-center">
+                    <div class="stats-icon me-3" style="background: var(--gradient);">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">Active Goals</h6>
+                        <h4 class="mb-0">{{ goals.count }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Transactions -->
+        <div class="col-md-8 mb-4">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Transactions</h5>
+                        <a href="{% url 'transaction_list' %}" class="btn btn-sm btn-primary">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if transactions %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ transaction.date }}</td>
+                                    <td>{{ transaction.description }}</td>
+                                    <td>{{ transaction.category.name }}</td>
+                                    <td class="{% if transaction.category.type == 'income' %}text-success{% else %}text-danger{% endif %}">
+                                        {{ user.currency }} {{ transaction.amount }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center my-4">No recent transactions found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Goals -->
+        <div class="col-md-4 mb-4">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Active Goals</h5>
+                        <a href="{% url 'goal_list' %}" class="btn btn-sm btn-primary">View All</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if goals %}
+                    {% for goal in goals %}
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <h6 class="mb-0">{{ goal.name }}</h6>
+                            <span class="text-muted">{{ goal.get_progress_percentage|floatformat:1 }}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{ goal.get_progress_percentage }}%"></div>
+                        </div>
+                        <small class="text-muted">Target: {{ user.currency }} {{ goal.target_amount }}</small>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-muted text-center my-4">No active goals found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
